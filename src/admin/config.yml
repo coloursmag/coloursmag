@@ -55,14 +55,14 @@ collections:
         label: "형식"
         widget: "select"
         default: "News"
-        options: ["Review", "Interview", "Curation", "News", "Essay"]
+        options: ["Review", "Interview", "Curation", "News", "Essay", "Issue"]
         hint: "글의 종류입니다. 홈 상단 앞쪽 분류에 해당합니다."
 
       - name: "category"
         label: "주제 (대표)"
         widget: "select"
-        default: "FILM"
-        options: ["FILM", "CULTURE", "ANIME", "STYLE", "TREND", "PEOPLE", "PLACE"]
+        default: "Film"
+        options: ["Film", "Culture", "Anime", "Style", "Trend", "People", "Place"]
         hint: "홈 상단 뒤쪽 분류입니다. 대표 주제 하나를 고르세요."
 
       - name: "topics"
@@ -70,7 +70,7 @@ collections:
         widget: "select"
         multiple: true
         required: false
-        options: ["FILM", "CULTURE", "ANIME", "STYLE", "TREND", "PEOPLE", "PLACE", "영화제", "굿즈", "출판", "음악"]
+        options: ["Film", "Culture", "Anime", "Style", "Trend", "People", "Place", "영화제", "굿즈", "출판", "음악"]
         hint: "여러 분류에 함께 걸고 싶을 때만 고르세요."
 
       - name: "date"

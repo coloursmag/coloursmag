@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "<스파이더맨: 브랜드 뉴 데이> 예매 50만 돌파"
 dek: "개봉 3일 전 기준 올해 개봉작 가운데 최고 기록. 1000만 관객을 동원한 <아바타: 물의 길>의 같은 시점 예매량도 넘어섰다."
-category: FILM
+category: Film
 badge: NEWS
 date: 2026-07-26
 image: /assets/spiderman.webp

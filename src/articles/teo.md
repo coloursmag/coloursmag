@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "김태호 PD의 TEO가 영화 배급에 뛰어든다"
 dek: "워터홀컴퍼니와 손잡고 극장 배급과 마케팅 캠페인을 함께 추진한다. 첫 협업작은 A24의 <더 드라마>다."
-category: TREND
+category: Trend
 badge: NEWS
 date: 2026-07-29
 image: /assets/teo.webp

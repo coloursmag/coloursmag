@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "배우 문근영이 결혼했다"
 dek: "7세 연상의 뮤지컬·연극 배우 정평과 최근 조용히 결혼식을 올렸다. 자필 편지로 팬들에게 직접 소식을 전했다."
-category: PEOPLE
+category: People
 badge: NEWS
 date: 2026-07-29
 image: /assets/moongeunyoung.jpg

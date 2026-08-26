@@ -3,7 +3,7 @@ layout: article.njk
 form: Review
 title: 고장 난 복사기가 뱉어낸 나
 dek: <백룸> 리뷰
-category: FILM
+category: Film
 type: feature
 date: 2026-08-06
 image: /assets/vuk9mecibp4cvrwqzehmna-5-.jpg

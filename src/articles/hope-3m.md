@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "<호프>, 8일 연속 1위로 300만 눈앞"
 dek: "개봉 첫날 33만 관객으로 나홍진 감독 작품 중 역대 최고 오프닝을 세웠다. 올해 최단 기간으로 100만·200만을 잇따라 돌파했다."
-category: FILM
+category: Film
 badge: NEWS
 date: 2026-07-23
 image: /assets/hope-3m.jpg

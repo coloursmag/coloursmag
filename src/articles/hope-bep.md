@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "<호프> 손익분기점 보도자료, 1시간 30분 만에 제목이 바뀌었다"
 dek: "투자사 에피소드컴퍼니가 손익분기점 돌파를 앞뒀다는 자료를 배포했다가 ‘중간 지점을 넘었다’로 정정했다. 메인 투자·배급사와 사전 협의는 없었던 것으로 전해진다."
-category: TREND
+category: Trend
 badge: NEWS
 date: 2026-07-27
 image: /assets/hope-bep.jpg

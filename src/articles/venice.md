@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "제목이 상충되는 두 영화가 베니스에서 나란히 공개된다"
 dek: "<룩백>과 <오아시스: 돈 룩 백 인 앵거>. 제83회 베니스국제영화제에서 두 작품 모두 월드 프리미어로 공개된다."
-category: CULTURE
+category: Culture
 badge: NEWS
 date: 2026-07-25
 image: /assets/venice.jpg

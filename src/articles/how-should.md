@@ -4,7 +4,7 @@ form: News
 title: "대작들 사이에서 다큐멘터리가 박스오피스 6위에 올랐다"
 dek: "<어떻게 해야 했을까?>가 개봉 첫날 좌석판매율 49.3%를 기록했다. 일본에서는 4개 관에서 시작해 145개 관까지 늘어난 작품이다."
 eyebrow: "독립·예술영화 박스오피스 1위"
-category: FILM
+category: Film
 badge: NEWS
 date: 2026-07-30
 image: /assets/doc-howshould.jpg

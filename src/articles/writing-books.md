@@ -6,7 +6,7 @@ featureNo: "001"
 featureNote: "책 10권"
 title: "AI 시대에 오히려 더 중요해진 글쓰기, 그 ‘한 끗’을 위한 책 10권"
 dek: "AI는 ‘유(有)’를 더 나은 ‘유’로 다듬을 수는 있어도, ‘무(無)’에서 ‘유’를 만들어내는 데는 아직 서툴다."
-category: CULTURE
+category: Culture
 badge: "No.001"
 date: 2026-07-26
 image: /assets/writingbooks.jpg

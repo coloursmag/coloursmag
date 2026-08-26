@@ -3,7 +3,7 @@ layout: article.njk
 form: News
 title: "소설가 히가시노 게이고가 세상을 떠났다"
 dek: "향년 68세. 대장암으로 지난 23일 새벽 별세했다. 투병 중에도 집필을 이어간 106번째 저서는 8월 5일 출간될 예정이다."
-category: CULTURE
+category: Culture
 badge: NEWS
 date: 2026-07-27
 image: /assets/higashino.webp
