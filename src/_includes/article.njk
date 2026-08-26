@@ -1,0 +1,75 @@
+---
+layout: base.njk
+hideFilters: true
+---
+{% set pageTitle = title %}
+{% set pageDescription = dek %}
+
+<main id="main">
+  <article class="art">
+    {% if image %}<figure class="lead"><img src="{{ image }}" alt="{{ imageAlt or title }}"></figure>{% endif %}
+
+    <div class="metarow">
+      <span>{{ form or "News" }}</span>
+      <span class="date">{{ date | krDate }}</span>
+    </div>
+    <h1>{{ title }}</h1>
+    {% if dek %}<p class="dek">{{ dek }}</p>{% endif %}
+
+    <div class="credit">
+      <p class="who"><b>EDITOR</b>{{ author or "편집부" }}</p>
+      <div class="share">
+        <button type="button" onclick="toast('URL 링크가 복사되었습니다. 공유해보세요!')" aria-label="X에 공유">𝕏</button>
+        <button type="button" onclick="toast('URL 링크가 복사되었습니다. 공유해보세요!')" aria-label="링크 복사">↗</button>
+      </div>
+    </div>
+
+    <div class="col">
+      {{ content | safe }}
+
+      {% if items and items.length %}
+      <ol class="list">
+        {% for it in items %}
+        <li><div><b>{{ it.name }}{% if it.note %} <em>{{ it.note }}</em>{% endif %}</b>
+          {% if it.desc %}<p>{{ it.desc }}</p>{% endif %}</div></li>
+        {% endfor %}
+      </ol>
+      {% endif %}
+
+      <p class="byline">
+        <span>{% if type == "feature" %}기획·글{% else %}글{% endif %} |</span>{{ author or "편집부" }}<br>
+        <span>사진 |</span>{{ photoCredit or "—" }}
+      </p>
+
+      {% if keywords and keywords.length %}
+      <div class="hash">{% for k in keywords %}<span>#{{ k }}</span>{% endfor %}</div>
+      {% endif %}
+    </div>
+  </article>
+
+  {% if instagram %}
+  <section class="ig">
+    <a class="ig-card" href="{{ instagram }}" target="_blank" rel="noopener">
+      <figure><img src="{{ image }}" alt=""></figure>
+      <div>
+        <b>INSTAGRAM</b>
+        <h3>{{ igTitle or "이 글은 인스타그램에도 올라와 있습니다" }}</h3>
+        <p>{{ igText or "카드뉴스와 사진을 함께 보시려면 원문으로 이동하세요." }}</p>
+        <span>인스타그램에서 보기 ↗</span>
+      </div>
+    </a>
+  </section>
+  {% endif %}
+
+  <section class="more">
+    <h3>이어서 읽기</h3>
+    <div class="more-grid">
+      {% for o in collections.articles | without(page.url) | take(3) %}
+      <a href="{{ o.url }}">
+        <figure><img src="{{ o.data.image }}" alt="" loading="lazy"></figure>
+        <h4>{{ o.data.title }}</h4>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+</main>

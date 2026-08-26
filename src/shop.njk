@@ -1,0 +1,54 @@
+---
+layout: base.njk
+permalink: /shop/index.html
+isShop: true
+pageTitle: SHOP
+pageDescription: 컬러즈 매거진 인쇄판을 주문하실 수 있습니다.
+---
+<main id="main">
+  <div class="shopbar">
+    <span>인쇄판 {{ collections.products.length }}종 · 매 호 하나의 키워드로 엮습니다</span>
+    <div class="sort">
+      <button type="button" data-sort="new" aria-pressed="true">최신순</button>
+      <button type="button" data-sort="low" aria-pressed="false">낮은 가격순</button>
+    </div>
+  </div>
+
+  <div class="shop-grid" id="shopGrid">
+    {% for p in collections.products %}
+    <a class="prod" href="{{ p.url }}" data-price="{{ p.data.price }}" data-vol="{{ p.data.volumeNo }}">
+      <figure><img src="{{ p.data.cover }}" alt="{{ p.data.name }}" loading="lazy"></figure>
+      <div class="l1">
+        <span>{{ p.data.name or p.data.volume }}</span>
+        <em>{{ p.data.volume }}</em>
+      </div>
+      <div class="l2">
+        {% if p.data.soldOut %}<span class="off">품절</span>
+        {% else %}<span>{{ p.data.price | won }}원</span><span class="off">배송비 {{ p.data.shipping | won }}원</span>{% endif %}
+      </div>
+      <span class="cart">자세히 보기</span>
+    </a>
+    {% endfor %}
+  </div>
+</main>
+
+<script>
+(function(){
+  var grid = document.getElementById('shopGrid');
+  if(!grid) return;
+  var cards = [].slice.call(grid.children);
+  document.querySelectorAll('.shopbar .sort button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.shopbar .sort button').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      var key = b.dataset.sort;
+      cards.slice().sort(function(x, y){
+        return key === 'low'
+          ? (+x.dataset.price) - (+y.dataset.price)
+          : (+y.dataset.vol) - (+x.dataset.vol);
+      }).forEach(function(c){ grid.appendChild(c) });
+    });
+  });
+})();
+</script>

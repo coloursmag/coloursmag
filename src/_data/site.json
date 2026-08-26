@@ -1,0 +1,28 @@
+{
+  "title": "colours",
+  "tagline": "영화 잡지",
+  "description": "매 호 하나의 키워드를 정해, 영화를 중심으로 음악·미술·공간·문화가 어떻게 이어지는지 따라갑니다.",
+  "instagram": "",
+  "orderForm": "",
+  "forms": [
+    "Review",
+    "Interview",
+    "Curation",
+    "News",
+    "Essay"
+  ],
+  "topics": [
+    "FILM",
+    "CULTURE",
+    "ANIME",
+    "STYLE",
+    "TREND",
+    "PEOPLE",
+    "PLACE",
+    "영화제",
+    "굿즈",
+    "출판",
+    "음악"
+  ],
+  "businessInfo": "Volume 1. 리미널 스페이스 · ISBN 9791122022100"
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if pageTitle %}{{ pageTitle }} — {{ site.title }}{% else %}{{ site.title }} — {{ site.tagline }}{% endif %}</title>
+<meta name="description" content="{{ pageDescription or site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header class="head" id="head">
+  <div class="head-in">
+    <a class="mark" href="/">{{ site.title }}{% if site.markSuffix %}<span>({{ site.markSuffix }})</span>{% endif %}</a>
+    <nav class="mini" aria-label="주요 메뉴">
+      <a href="/about/">ABOUT</a>
+      <a href="/"{% if isHome %} aria-current="page"{% endif %}>MAGAZINE</a>
+      <a href="{{ site.instagram or '#' }}"{% if site.instagram %} target="_blank" rel="noopener"{% endif %}>INSTAGRAM</a>
+      <a href="#">KO</a>
+    </nav>
+  </div>
+
+  <p class="tagline">{{ site.description }}</p>
+
+  {% if not hideFilters %}
+  <div class="filters">
+    <div class="row">
+      <a class="chip shop" href="/shop/"{% if isShop %} aria-current="page"{% endif %}>SHOP</a>
+      {% for f in site.forms %}
+      <a class="chip" href="/?form={{ f | lower }}" data-form="{{ f }}" aria-pressed="false">{{ f }}</a>
+      {% endfor %}
+      {% for t in site.topics %}
+      <a class="chip" href="/?topic={{ t | lower }}" data-topic="{{ t }}" aria-pressed="false">{{ t }}</a>
+      {% endfor %}
+      <a class="chip reset" href="/" data-reset>전체 보기</a>
+    </div>
+  </div>
+  {% endif %}
+</header>
+
+{{ content | safe }}
+
+<footer>
+  <span>© 2026 {{ site.title }} magazine</span>
+  <span>{{ site.businessInfo }}</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 스크롤하면 제호가 줄어들며 분류 칩만 남아 고정됩니다
+(function(){
+  var head = document.getElementById('head');
+  if(head) addEventListener('scroll', function(){
+    head.classList.toggle('small', scrollY > 120);
+  }, {passive:true});
+})();
+
+// 짧은 알림
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(function(){ t.classList.remove('show') }, 2000);
+}
+</script>
+</body>
+</html>

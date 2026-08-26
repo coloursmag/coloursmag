@@ -1,0 +1,287 @@
+# ══════════════════════════════════════════════
+# colours 관리자 설정
+# 여기를 고치면 /admin 화면의 입력 항목이 바뀝니다.
+# ══════════════════════════════════════════════
+
+backend:
+  name: git-gateway
+  branch: main
+
+# 내 컴퓨터에서 관리자 화면을 쓸 때 켜집니다.
+# (npm run cms 로 실행하면 GitHub 없이 바로 파일이 저장됩니다)
+local_backend: true
+
+media_folder: "src/assets"      # 올린 사진이 저장되는 곳
+public_folder: "/assets"        # 사이트에서 불러오는 경로
+
+publish_mode: simple
+locale: "ko"
+
+collections:
+  # ────────────────────────────────────────────
+  # 1. 글
+  # ────────────────────────────────────────────
+  - name: "articles"
+    label: "글"
+    label_singular: "글"
+    folder: "src/articles"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "yaml-frontmatter"
+    # 목록에 날짜를 넣으면 시차 때문에 하루 어긋나 보여서 제목만 씁니다
+    summary: "{{title}}"
+    sortable_fields: ["date", "title"]
+    view_groups:
+      - label: "형식"
+        field: form
+      - label: "주제"
+        field: category
+    fields:
+      - { name: "layout", label: "레이아웃", widget: "hidden", default: "article.njk" }
+
+      - name: "title"
+        label: "제목"
+        widget: "string"
+        hint: "홈 카드와 글 맨 위에 크게 나옵니다."
+
+      - name: "dek"
+        label: "부제 (한 줄 요약)"
+        widget: "text"
+        required: false
+        hint: "제목 아래 회색으로 붙는 문장입니다. 비워도 됩니다."
+
+      - name: "form"
+        label: "형식"
+        widget: "select"
+        default: "News"
+        options: ["Review", "Interview", "Curation", "News", "Essay"]
+        hint: "글의 종류입니다. 홈 상단 앞쪽 분류에 해당합니다."
+
+      - name: "category"
+        label: "주제 (대표)"
+        widget: "select"
+        default: "FILM"
+        options: ["FILM", "CULTURE", "ANIME", "STYLE", "TREND", "PEOPLE", "PLACE"]
+        hint: "홈 상단 뒤쪽 분류입니다. 대표 주제 하나를 고르세요."
+
+      - name: "topics"
+        label: "주제 추가 (선택)"
+        widget: "select"
+        multiple: true
+        required: false
+        options: ["FILM", "CULTURE", "ANIME", "STYLE", "TREND", "PEOPLE", "PLACE", "영화제", "굿즈", "출판", "음악"]
+        hint: "여러 분류에 함께 걸고 싶을 때만 고르세요."
+
+      - name: "date"
+        label: "발행일"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+        # 한국 시간(+9) 때문에 하루 밀려 저장되는 걸 막습니다
+        picker_utc: false
+
+      - name: "author"
+        label: "글쓴이"
+        widget: "string"
+        required: false
+        default: "편집부"
+
+      - name: "photoCredit"
+        label: "사진 출처"
+        widget: "string"
+        required: false
+        hint: "예: 네이버 영화, 배급사 제공"
+
+      - name: "image"
+        label: "대표 이미지"
+        widget: "image"
+        hint: "홈 카드(3:4)와 글 맨 위에 쓰입니다. 세로로 긴 사진이 좋습니다."
+
+      - name: "imageAlt"
+        label: "이미지 설명"
+        widget: "string"
+        required: false
+        hint: "사진이 안 보일 때 대신 읽히는 문장입니다."
+
+      - name: "body"
+        label: "본문"
+        widget: "markdown"
+
+      - name: "items"
+        label: "목록 (큐레이션용)"
+        widget: "list"
+        required: false
+        collapsed: true
+        label_singular: "항목"
+        summary: "{{fields.name}}"
+        hint: "책·영화 추천처럼 번호가 붙는 목록이 필요할 때만 씁니다."
+        fields:
+          - { name: "name", label: "이름", widget: "string" }
+          - { name: "note", label: "부가 정보", widget: "string", required: false }
+          - { name: "desc", label: "설명", widget: "text", required: false }
+
+      - name: "instagram"
+        label: "인스타그램 원문 주소"
+        widget: "string"
+        required: false
+        hint: "넣으면 글 아래에 인스타그램에서 보기 카드가 생깁니다."
+
+      - name: "keywords"
+        label: "해시태그"
+        widget: "list"
+        required: false
+        hint: "# 없이 단어만 적으세요."
+
+      - name: "featured"
+        label: "헤드라인으로 쓰기"
+        widget: "boolean"
+        required: false
+        default: false
+
+      - name: "thisWeek"
+        label: "THIS WEEK에 넣기"
+        widget: "boolean"
+        required: false
+        default: false
+
+      - name: "type"
+        label: "자체 기획 글"
+        widget: "select"
+        required: false
+        default: "news"
+        options:
+          - { label: "일반 (뉴스·소식)", value: "news" }
+          - { label: "자체 기획 (기획·글 표기)", value: "feature" }
+
+  # ────────────────────────────────────────────
+  # 2. SHOP 상품
+  # ────────────────────────────────────────────
+  - name: "products"
+    label: "SHOP 상품"
+    label_singular: "상품"
+    folder: "src/products"
+    create: true
+    slug: "vol{{fields.volumeNo}}"
+    extension: "md"
+    format: "yaml-frontmatter"
+    summary: "{{name}}"
+    fields:
+      - { name: "layout", label: "레이아웃", widget: "hidden", default: "product.njk" }
+
+      - name: "name"
+        label: "상품명"
+        widget: "string"
+        hint: "SHOP 목록과 상세 페이지 제목에 그대로 나옵니다."
+
+      - name: "volumeNo"
+        label: "호수 (숫자만)"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        hint: "주소가 /shop/vol1/ 처럼 만들어집니다."
+
+      - { name: "volume", label: "호수 표기", widget: "string", default: "Volume 1." }
+      - { name: "keyword", label: "이번 호 키워드", widget: "string" }
+      - { name: "season", label: "발행 시기", widget: "string", required: false, hint: "예: 2026 여름" }
+      - { name: "status", label: "상태 문구", widget: "string", required: false, default: "판매 중" }
+
+      - name: "date"
+        label: "발행일"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+        picker_utc: false
+
+      - { name: "soldOut", label: "품절", widget: "boolean", default: false }
+      - { name: "onSale", label: "판매 중", widget: "boolean", default: true, required: false }
+
+      - name: "cover"
+        label: "대표 이미지 (표지)"
+        widget: "image"
+        hint: "SHOP 목록에 나오는 사진입니다."
+
+      - name: "shots"
+        label: "상세 이미지"
+        widget: "list"
+        field: { name: "image", label: "이미지", widget: "image" }
+        required: false
+        hint: "첫 번째가 크게 보이고 나머지는 아래 작은 썸네일이 됩니다."
+
+      - { name: "dek", label: "한 줄 소개", widget: "text", required: false }
+
+      - name: "price"
+        label: "가격 (원)"
+        widget: "number"
+        value_type: "int"
+        default: 15000
+
+      - name: "shipping"
+        label: "배송비 (원)"
+        widget: "number"
+        value_type: "int"
+        default: 3500
+
+      - { name: "size", label: "판형", widget: "string", required: false, default: "180 × 240 mm" }
+      - { name: "pages", label: "분량", widget: "string", required: false, default: "60쪽" }
+      - { name: "binding", label: "제본", widget: "string", required: false, default: "중철제본" }
+      - { name: "extra", label: "구성", widget: "string", required: false }
+      - { name: "isbn", label: "ISBN", widget: "string", required: false }
+
+      - name: "buyUrl"
+        label: "주문 링크 (스마트스토어 등)"
+        widget: "string"
+        required: false
+        hint: "비워두면 계좌 이체 안내만 나옵니다. 스토어를 열면 주소를 여기에 붙여 넣으세요."
+
+      - { name: "bank", label: "입금 계좌", widget: "string", required: false }
+      - { name: "bankHolder", label: "예금주", widget: "string", required: false }
+
+      - name: "about"
+        label: "소개글 (왼쪽 단)"
+        widget: "list"
+        required: false
+        hint: "문단 하나씩 나눠서 넣으세요."
+
+      - name: "about2"
+        label: "소개글 (오른쪽 단)"
+        widget: "list"
+        required: false
+
+      - { name: "designNote", label: "디자인 노트", widget: "text", required: false }
+
+      - name: "toc"
+        label: "목차"
+        widget: "list"
+        required: false
+        hint: "한 줄에 한 편씩. 번호는 자동으로 붙습니다."
+
+      - { name: "body", label: "발행인의 글", widget: "markdown", required: false }
+
+  # ────────────────────────────────────────────
+  # 3. 사이트 설정
+  # ────────────────────────────────────────────
+  - name: "settings"
+    label: "사이트 설정"
+    files:
+      - name: "site"
+        label: "기본 정보"
+        file: "src/_data/site.json"
+        fields:
+          - { name: "title", label: "매체명", widget: "string" }
+          - { name: "markSuffix", label: "제호 옆 작은 글자", widget: "string", required: false, hint: "예: 영화 → colours(영화)" }
+          - { name: "tagline", label: "한 줄 설명", widget: "string" }
+          - { name: "description", label: "소개 문장", widget: "text", hint: "제호 아래와 검색 결과에 쓰입니다." }
+          - { name: "instagram", label: "인스타그램 주소", widget: "string", required: false }
+          - { name: "orderForm", label: "주문 폼 주소", widget: "string", required: false }
+          - name: "forms"
+            label: "형식 분류"
+            widget: "list"
+            hint: "홈 상단 앞쪽 분류입니다. 글의 형식 선택지와 같아야 합니다."
+          - name: "topics"
+            label: "주제 분류"
+            widget: "list"
+            hint: "홈 상단 뒤쪽 분류입니다."
+          - { name: "businessInfo", label: "푸터 문구", widget: "string", required: false }

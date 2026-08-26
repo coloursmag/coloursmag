@@ -1,0 +1,6 @@
+node_modules/
+_site/
+.cache/
+
+# 사이트와 무관한 도구 캐시
+.impeccable/

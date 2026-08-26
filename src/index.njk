@@ -1,0 +1,88 @@
+---
+layout: base.njk
+permalink: /index.html
+isHome: true
+---
+{# 기사 카드 — 3:4 썸네일, 제목은 두 줄 고정 #}
+{% macro card(a) %}
+<a class="item" href="{{ a.url }}"
+   data-form="{{ a.data.form or 'News' }}"
+   data-topics="{{ a.data.category }}{% for t in a.data.topics %} {{ t }}{% endfor %}">
+  <figure><img src="{{ a.data.image }}" alt="{{ a.data.imageAlt or '' }}" loading="lazy"></figure>
+  <p class="kind">{{ a.data.form or 'News' }}</p>
+  <h2>{{ a.data.title }}</h2>
+  <p class="by">{{ a.data.author or "편집부" }}</p>
+  <div class="tags">
+    <span>#{{ a.data.category }}</span>
+    {% for t in a.data.topics %}<span>#{{ t }}</span>{% endfor %}
+  </div>
+</a>
+{% endmacro %}
+
+<main class="grid" id="grid">
+  {% for a in collections.articles %}{{ card(a) }}{% endfor %}
+  <p class="empty" id="empty" hidden>해당하는 글이 아직 없습니다.</p>
+</main>
+
+<script>
+(function(){
+  var items = [].slice.call(document.querySelectorAll('.item'));
+  var chips = [].slice.call(document.querySelectorAll('.chip[data-form],.chip[data-topic]'));
+  var reset = document.querySelector('.chip[data-reset]');
+  var empty = document.getElementById('empty');
+  var forms = new Set(), topics = new Set();
+
+  // 카드가 시야에 들어올 때 아래에서 떠오릅니다
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) }
+    });
+  }, {rootMargin:'0px 0px -8% 0px'});
+  items.forEach(function(el, i){ el.style.transitionDelay = (i % 6) * 55 + 'ms'; io.observe(el) });
+
+  function apply(){
+    var shown = 0;
+    items.forEach(function(el){
+      var okF = !forms.size || forms.has(el.dataset.form);
+      var list = (el.dataset.topics || '').split(' ');
+      var okT = !topics.size || list.some(function(t){ return topics.has(t) });
+      var vis = okF && okT;
+      el.hidden = !vis;
+      if(vis){ shown++; el.classList.add('in') }
+    });
+    empty.hidden = shown > 0;
+    var q = [];
+    forms.forEach(function(f){ q.push('form=' + encodeURIComponent(f)) });
+    topics.forEach(function(t){ q.push('topic=' + encodeURIComponent(t)) });
+    history.replaceState(null, '', q.length ? '?' + q.join('&') : location.pathname);
+  }
+
+  chips.forEach(function(c){
+    c.addEventListener('click', function(e){
+      e.preventDefault();
+      var set = c.dataset.form ? forms : topics;
+      var val = c.dataset.form || c.dataset.topic;
+      if(set.has(val)){ set.delete(val); c.setAttribute('aria-pressed','false') }
+      else { set.add(val); c.setAttribute('aria-pressed','true') }
+      apply();
+    });
+  });
+  if(reset) reset.addEventListener('click', function(e){
+    e.preventDefault(); forms.clear(); topics.clear();
+    chips.forEach(function(c){ c.setAttribute('aria-pressed','false') });
+    apply();
+  });
+
+  // 주소로 들어온 필터를 그대로 켭니다 (/?topic=film)
+  var p = new URLSearchParams(location.search);
+  p.getAll('form').forEach(function(v){
+    var c = chips.find(function(x){ return (x.dataset.form||'').toLowerCase() === v.toLowerCase() });
+    if(c){ forms.add(c.dataset.form); c.setAttribute('aria-pressed','true') }
+  });
+  p.getAll('topic').forEach(function(v){
+    var c = chips.find(function(x){ return (x.dataset.topic||'').toLowerCase() === v.toLowerCase() });
+    if(c){ topics.add(c.dataset.topic); c.setAttribute('aria-pressed','true') }
+  });
+  if(forms.size || topics.size) apply();
+})();
+</script>

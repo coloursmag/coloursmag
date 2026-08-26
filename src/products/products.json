@@ -1,0 +1,6 @@
+{
+  "layout": "product.njk",
+  "permalink": "/shop/{{ page.fileSlug }}/index.html",
+  "isShop": true,
+  "eleventyComputed": { "pageTitle": "{{ name }}" }
+}
