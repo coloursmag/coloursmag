@@ -150,12 +150,36 @@ if (window.netlifyIdentity) {
 </script>
 
 <script>
-// 스크롤하면 제호가 줄어들며 분류 칩만 남아 고정됩니다
+// 스크롤하면 제호가 줄어들며 분류 칩만 남아 고정됩니다.
+//
+// 헤더는 sticky 라 줄어들면 문서 전체가 그만큼 짧아집니다. 화면을 겨우 넘기는
+// 짧은 페이지(상품이 하나뿐인 SHOP 같은)에서는 브라우저가 스크롤을 되밀어 올리고,
+// 되밀린 위치가 다시 기준 아래로 내려가 헤더가 커졌다 작아졌다 떨렸습니다.
+// 그래서 (1) 줄일 여유가 있을 때만 줄이고 (2) 켜고 끄는 기준을 벌려 두었습니다.
 (function(){
   var head = document.getElementById('head');
-  if(head) addEventListener('scroll', function(){
-    head.classList.toggle('small', scrollY > 120);
-  }, {passive:true});
+  if(!head) return;
+
+  var small = false, waiting = false;
+  var SHRINK = 140, EXPAND = 60, NEED = 420;   // 켜는 지점 / 끄는 지점 / 필요한 스크롤 여유
+
+  function update(){
+    waiting = false;
+    var room = document.documentElement.scrollHeight - innerHeight;
+    if(!small){
+      if(scrollY > SHRINK && room > NEED){ small = true; head.classList.add('small') }
+    } else if(scrollY < EXPAND){
+      small = false; head.classList.remove('small');
+    }
+  }
+  function onScroll(){
+    if(waiting) return;
+    waiting = true;
+    requestAnimationFrame(update);
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll, {passive:true});
+  update();
 })();
 
 // 밝기 전환 — 고른 값은 다음에 올 때도 유지됩니다
