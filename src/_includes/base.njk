@@ -26,6 +26,9 @@
 <meta name="twitter:image" content="{{ siteUrl }}{{ metaImage }}">
 
 <meta name="robots" content="index,follow,max-image-preview:large">
+{# 구글·네이버 소유확인 — 관리자 → 사이트 설정에서 코드를 붙여 넣으면 켜집니다 #}
+{% if site.googleVerification %}<meta name="google-site-verification" content="{{ site.googleVerification }}">{% endif %}
+{% if site.naverVerification %}<meta name="naver-site-verification" content="{{ site.naverVerification }}">{% endif %}
 <meta name="author" content="{{ author or site.title }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ siteUrl }}/feed.xml">
 

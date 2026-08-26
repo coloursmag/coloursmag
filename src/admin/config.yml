@@ -285,3 +285,13 @@ collections:
             widget: "list"
             hint: "홈 상단 뒤쪽 분류입니다."
           - { name: "businessInfo", label: "푸터 문구", widget: "string", required: false }
+          - name: "googleVerification"
+            label: "구글 서치콘솔 확인 코드"
+            widget: "string"
+            required: false
+            hint: "구글이 준 meta 태그의 content= 안쪽 값만 붙여 넣으세요."
+          - name: "naverVerification"
+            label: "네이버 서치어드바이저 확인 코드"
+            widget: "string"
+            required: false
+            hint: "네이버가 준 meta 태그의 content= 안쪽 값만 붙여 넣으세요."
