@@ -3,26 +3,23 @@ layout: base.njk
 hideFilters: true
 ---
 {% set gallery = shots if shots and shots.length else [cover] %}
+{# 제목을 크게 세우고 결제는 오른쪽에 모읍니다 (magazine-b 구조) #}
 <main id="main">
   <article class="pd">
-    <div class="pd-shots">
-      <figure class="pd-main"><img id="pdMain" src="{{ gallery[0] }}" alt="{{ name }}"></figure>
-      {% if gallery.length > 1 %}
-      <div class="pd-thumbs">
-        {% for g in gallery %}
-        <button type="button" class="{{ 'on' if loop.first }}" data-src="{{ g }}" aria-label="이미지 {{ loop.index }}">
-          <img src="{{ g }}" alt="" loading="lazy">
-        </button>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-
-    <div class="pd-info">
-      <p class="cat">{{ volume }} {{ season }} · {{ status }}</p>
+    <div class="pd-head">
+      <p class="cat">{{ (kind or "단행본") | upper }} · {{ volume }} {{ season }}</p>
       <h1>{{ name or keyword }}</h1>
-      {% if dek %}<p class="pd-dek">{{ dek }}</p>{% endif %}
-      <p class="pd-price"><b>{{ price | won }}원</b><span class="off">+ 배송비 {{ shipping | won }}원</span></p>
+
+      <div class="pd-price">
+        <span>{{ price | won }}원</span>
+        <span class="off">+ 배송비 {{ shipping | won }}원</span>
+      </div>
+
+      <div class="pd-qty">
+        <button type="button" id="minus" aria-label="수량 줄이기">−</button>
+        <b id="qty">1</b>
+        <button type="button" id="plus" aria-label="수량 늘리기">+</button>
+      </div>
 
       <dl class="pd-spec">
         <div><dt>판형</dt><dd>{{ size }}</dd></div>
@@ -32,36 +29,52 @@ hideFilters: true
         <div><dt>ISBN</dt><dd>{{ isbn }}</dd></div>
       </dl>
 
-      <div class="pd-total"><span>결제 예정 금액</span><b>{{ (price + shipping) | won }}원</b></div>
+      {% if dek %}<p class="pd-dek">{{ dek }}</p>{% endif %}
+    </div>
 
+    <div class="pd-side">
       {% if soldOut %}
         <button class="pd-buy ghost" type="button" disabled>품절되었습니다</button>
       {% elif buyUrl %}
-        <a class="pd-buy pay" href="{{ buyUrl }}" target="_blank" rel="noopener">주문하기</a>
+        <a class="pd-buy" href="{{ buyUrl }}" target="_blank" rel="noopener">
+          <b id="qtyPrice">{{ (price + shipping) | won }}원</b> 주문하기
+        </a>
       {% else %}
-        <button class="pd-buy pay" type="button" data-order>주문하기</button>
+        <button class="pd-buy" type="button" data-order>
+          <b id="qtyPrice">{{ (price + shipping) | won }}원</b> 주문하기
+        </button>
       {% endif %}
 
       <details class="pd-bank"{% if not buyUrl %} open{% endif %}>
         <summary>계좌 이체로 주문하기</summary>
-        <p>아래 계좌로 <b>{{ (price + shipping) | won }}원</b>을 입금하신 뒤, 인스타그램 DM으로
+        <p>아래 계좌로 입금하신 뒤, 인스타그램 DM으로
            <b>입금자명 · 연락처 · 받으실 주소</b>를 보내주시면 순서대로 발송해 드립니다.</p>
         <p class="acct">
           <b>{{ bank }}</b> 예금주 {{ bankHolder }}
           <button type="button" data-copy="{{ bank }}">계좌 복사</button>
         </p>
       </details>
+
+      {% if about and about.length %}
+      <div class="pd-desc">
+        <h2>DESCRIPTION</h2>
+        {% for t in about %}<p>{{ t }}</p>{% endfor %}
+      </div>
+      {% endif %}
     </div>
   </article>
 
-  {% if about and about.length %}
+  <div class="pd-shots">
+    {% for g in gallery %}<img src="{{ g }}" alt="{{ name }}" loading="lazy">{% endfor %}
+  </div>
+
+  {% if about2 and about2.length %}
   <section class="pd-sec">
     <h2>이 책에 대하여</h2>
     <div class="pd-cols">
-      <div>{% for t in about %}<p>{{ t }}</p>{% endfor %}</div>
       <div>{% for t in about2 %}<p>{{ t }}</p>{% endfor %}</div>
+      <div>{% if designNote %}<p class="pd-note"><b>디자인 노트</b>{{ designNote }}</p>{% endif %}</div>
     </div>
-    {% if designNote %}<p class="pd-note"><b>디자인 노트</b>{{ designNote }}</p>{% endif %}
   </section>
   {% endif %}
 
@@ -72,19 +85,42 @@ hideFilters: true
   </section>
   {% endif %}
 
-  {% if content %}<section class="pd-sec"><h2>발행인의 글</h2><div class="col">{{ content | safe }}</div></section>{% endif %}
+  {% set others = collections.products | without(page.url) %}
+  {% if others.length %}
+  <section class="pd-rel">
+    <h2>RELATED PRODUCTS</h2>
+    <div class="shop-list">
+      {% for p in others | take(2) %}
+      {% set s2 = p.data.shots if p.data.shots and p.data.shots.length else [p.data.cover] %}
+      <a class="prod" href="{{ p.url }}">
+        <div class="pair">
+          <figure><img src="{{ s2[0] }}" alt="{{ p.data.name }}" loading="lazy"></figure>
+          <figure><img src="{{ s2[1] or s2[0] }}" alt="" loading="lazy"></figure>
+        </div>
+        <div class="line">
+          <span class="l"><span>{{ p.data.name }}</span><em>{{ p.data.kind or "단행본" }}</em>
+            <span>{{ p.data.price | won }}원</span></span>
+          <span class="cart">자세히 보기</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 </main>
 
 <script>
 (function(){
-  var main = document.getElementById('pdMain');
-  document.querySelectorAll('.pd-thumbs button').forEach(function(b){
-    b.addEventListener('click', function(){
-      main.src = b.dataset.src;
-      document.querySelectorAll('.pd-thumbs button').forEach(function(x){ x.classList.remove('on') });
-      b.classList.add('on');
-    });
-  });
+  var unit = {{ price }}, ship = {{ shipping }};
+  var q = 1, out = document.getElementById('qtyPrice');
+  function setQ(n){
+    q = Math.max(1, n);
+    document.getElementById('qty').textContent = q;
+    if(out) out.textContent = (unit * q + ship).toLocaleString('ko-KR') + '원';
+  }
+  document.getElementById('minus').addEventListener('click', function(){ setQ(q - 1) });
+  document.getElementById('plus').addEventListener('click', function(){ setQ(q + 1) });
+
   var copy = document.querySelector('[data-copy]');
   if(copy) copy.addEventListener('click', function(){
     navigator.clipboard.writeText(copy.dataset.copy).then(function(){ toast('계좌번호가 복사되었습니다') });

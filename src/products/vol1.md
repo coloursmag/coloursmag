@@ -1,5 +1,6 @@
 ---
 layout: product.njk
+kind: "단행본"
 name: "colours Vol.1 리미널 스페이스"
 volume: "Volume 1."
 volumeNo: 1

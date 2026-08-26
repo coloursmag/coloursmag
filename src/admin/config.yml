@@ -175,6 +175,12 @@ collections:
         widget: "string"
         hint: "SHOP 목록과 상세 페이지 제목에 그대로 나옵니다."
 
+      - name: "kind"
+        label: "분류"
+        widget: "string"
+        default: "단행본"
+        hint: "SHOP 왼쪽 분류 목록이 이 값으로 만들어집니다. 예: 단행본 · 굿즈 · 정기구독"
+
       - name: "volumeNo"
         label: "호수 (숫자만)"
         widget: "number"
