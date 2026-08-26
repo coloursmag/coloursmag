@@ -3,13 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% if pageTitle %}{{ pageTitle }} — {{ site.title }}{% else %}{{ site.title }} — {{ site.tagline }}{% endif %}</title>
-<meta name="description" content="{{ pageDescription or site.description }}">
+{# 자식 템플릿의 {% set %} 은 레이아웃까지 오지 않아서 프론트매터 값을 직접 씁니다 #}
+{% set pTitle = pageTitle or title %}
+{% set metaTitle %}{% if pTitle %}{{ pTitle }} — {{ site.title }}{% else %}{{ site.title }} — {{ site.tagline }}{% endif %}{% endset %}
+{% set metaDesc = pageDescription or dek or site.description %}
+{% set metaImage = image or cover or "/assets/issue1-cover.jpg" %}
+<title>{{ metaTitle }}</title>
+<meta name="description" content="{{ metaDesc }}">
+<link rel="canonical" href="{{ siteUrl }}{{ page.url }}">
+
+{# 카카오톡·페이스북·네이버 블로그에 링크를 붙였을 때 뜨는 미리보기 #}
+<meta property="og:type" content="{{ 'article' if layout == 'article.njk' else 'website' }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ pTitle or site.title }}">
+<meta property="og:description" content="{{ metaDesc }}">
+<meta property="og:url" content="{{ siteUrl }}{{ page.url }}">
+<meta property="og:image" content="{{ siteUrl }}{{ metaImage }}">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ pTitle or site.title }}">
+<meta name="twitter:description" content="{{ metaDesc }}">
+<meta name="twitter:image" content="{{ siteUrl }}{{ metaImage }}">
+
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="{{ author or site.title }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ siteUrl }}/feed.xml">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="/style.css">
+
+{# 검색엔진이 "이건 잡지다 / 이건 기사다" 로 이해하도록 알려줍니다 #}
+{% if layout == "article.njk" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": {{ title | dump | safe }},
+  "description": {{ (dek or site.description) | dump | safe }},
+  "image": ["{{ siteUrl }}{{ image }}"],
+  "datePublished": "{{ date | isoDate }}",
+  "author": { "@type": "Person", "name": {{ (author or "편집부") | dump | safe }} },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | dump | safe }},
+    "url": "{{ siteUrl }}/"
+  },
+  "mainEntityOfPage": "{{ siteUrl }}{{ page.url }}",
+  "inLanguage": "ko-KR"
+}
+</script>
+{% elif layout == "product.njk" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ name | dump | safe }},
+  "description": {{ (dek or site.description) | dump | safe }},
+  "image": ["{{ siteUrl }}{{ cover }}"],
+  "isbn": "{{ isbn }}",
+  "brand": { "@type": "Brand", "name": {{ site.title | dump | safe }} },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ siteUrl }}{{ page.url }}",
+    "priceCurrency": "KRW",
+    "price": "{{ price }}",
+    "availability": "https://schema.org/{{ 'OutOfStock' if soldOut else 'InStock' }}"
+  }
+}
+</script>
+{% else %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Periodical",
+  "name": {{ site.title | dump | safe }},
+  "description": {{ site.description | dump | safe }},
+  "url": "{{ siteUrl }}/",
+  "issn": "",
+  "inLanguage": "ko-KR"
+}
+</script>
+{% endif %}
 </head>
 <body>
 

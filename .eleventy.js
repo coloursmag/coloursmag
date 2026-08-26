@@ -4,6 +4,17 @@
    레이아웃(src/_includes/*.njk)을 입혀 HTML로 바뀝니다. */
 
 module.exports = function (eleventyConfig) {
+  // 사이트 주소 — Netlify가 빌드할 때 URL 환경변수를 넣어줍니다.
+  // 내 컴퓨터에서 볼 때는 localhost 로 떨어집니다.
+  eleventyConfig.addGlobalData('siteUrl',
+    (process.env.URL || process.env.DEPLOY_PRIME_URL || 'http://localhost:8080').replace(/\/$/, ''));
+
+  // 사이트맵·RSS에 쓰는 ISO 날짜
+  eleventyConfig.addFilter('isoDate', (d) => new Date(d).toISOString());
+  // 본문에서 태그를 걷어낸 요약
+  eleventyConfig.addFilter('plain', (html) =>
+    String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+
   // 그대로 복사할 것들
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/style.css");
