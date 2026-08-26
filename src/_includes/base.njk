@@ -100,7 +100,7 @@
     <a class="mark" href="/">{{ site.title }}{% if site.markSuffix %}<span>({{ site.markSuffix }})</span>{% endif %}</a>
     <nav class="mini" aria-label="주요 메뉴">
       <a href="/about/">ABOUT</a>
-      <a href="/"{% if isHome %} aria-current="page"{% endif %}>MAGAZINE</a>
+      <a href="/"{% if isHome %} class="off"{% endif %}>MAGAZINE</a>
       <a href="{{ site.instagram or '#' }}"{% if site.instagram %} target="_blank" rel="noopener"{% endif %}>INSTAGRAM</a>
       <button type="button" id="themeBtn" aria-label="밝기 전환">◐</button>
       <a href="#">KO</a>

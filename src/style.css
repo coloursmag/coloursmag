@@ -42,7 +42,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .skip:focus{left:0}
 
 /* ══ 고정 헤더 ══ */
-.head{position:sticky;top:0;z-index:40;background:var(--scrim);backdrop-filter:blur(12px)}
+.head{position:sticky;top:0;z-index:40;background:var(--scrim);backdrop-filter:blur(10px)}
 .head-in{padding:var(--edge) var(--edge) 0;display:grid;grid-template-columns:1fr auto;
   gap:1rem;align-items:start}
 .mark{font-family:var(--display);font-weight:900;line-height:.78;letter-spacing:-.055em;margin:0;
@@ -51,29 +51,31 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .head.small .mark{font-size:clamp(1.5rem,3.4vw,2.6rem)}
 .mini{display:flex;gap:1.05rem;align-items:center;padding-top:.4rem;flex-wrap:wrap;
   justify-content:flex-end}
-.mini a,.mini button{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+.mini a,.mini button{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-decoration:none;
   color:var(--ink);white-space:nowrap;padding-bottom:2px;border-bottom:1.5px solid transparent}
 .mini a:hover,.mini button:hover{border-bottom-color:var(--ink)}
 .mini a[aria-current]{border-bottom-color:var(--ink)}
-.tagline{padding:.85rem var(--edge) 0;margin:0;max-width:44rem;font-size:.9rem;color:var(--grey-2);
+.mini .off{color:var(--grey)}
+.tagline{padding:.85rem var(--edge) 0;margin:0;max-width:52ch;font-size:.9rem;color:var(--grey-2);
   max-height:4rem;overflow:hidden;transition:max-height .3s,opacity .25s,padding .3s}
 .head.small .tagline{max-height:0;opacity:0;padding-top:0}
 
 /* ══ 분류 칩 — 형식(검정) → 주제(흰색)가 한 줄로 이어져 감싸집니다 ══ */
-.filters{padding:clamp(1rem,2.2vw,1.8rem) var(--edge) clamp(.7rem,1.4vw,1rem);transition:padding .3s}
+.filters{padding:clamp(1rem,2.2vw,1.8rem) var(--edge) clamp(.7rem,1.4vw,1rem);
+  display:flex;flex-direction:column;gap:.3rem;transition:padding .3s}
 .head.small .filters{padding-top:.7rem}
 .row{display:flex;flex-wrap:wrap;gap:.35rem}
 .chip{font-size:clamp(.95rem,1.15vw,1.15rem);line-height:1;padding:.72rem 1rem;
   border:1.5px solid var(--ink);white-space:nowrap;transition:background .15s,color .15s;
-  display:inline-block}
+  display:inline-block}  /* 시안은 button, 여기는 주소가 있는 a 라 필요 */
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .chip:hover{background:var(--ink);color:var(--paper)}
-.chip.reset{border-style:dashed;color:var(--grey-2);
-  font-size:clamp(.85rem,1vw,1rem);letter-spacing:0}
+.chip.reset{border-style:dashed;font-family:var(--mono);font-size:clamp(.8rem,.95vw,.95rem);letter-spacing:.08em}
 /* SHOP — 분류 줄 맨 앞에서 검정 바탕 흰 글자로 강조 */
 .chip.shop{background:var(--ink);color:var(--paper);font-weight:700;letter-spacing:.06em;
   margin-right:.5rem}
 .chip.shop:hover{opacity:.78}
+.chip.shop[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
 
 /* ══ 기사 그리드 ══ */
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2.4rem .5rem;
@@ -85,7 +87,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .item[hidden]{display:none}
 .item figure{margin:0 0 .55rem;aspect-ratio:3/4;overflow:hidden;background:var(--wash)}
 .item figure img{width:100%;height:100%;object-fit:cover;
-  transition:transform .55s cubic-bezier(.22,.61,.24,1)}
+  transition:transform .55s cubic-bezier(.22,.61,.24,1),filter .35s}
 .item:hover figure img{transform:scale(1.045)}
 .kind{font-size:.74rem;color:var(--grey);margin:0 0 .15rem}
 /* 제목은 항상 두 줄 자리를 차지하게 고정 — 그래야 카드 아랫줄이 나란히 맞습니다 */
@@ -106,7 +108,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .art .lead img{width:100%;height:auto}
 .art .metarow{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
   font-size:.76rem;font-weight:700;margin:0 0 .5rem}
-.art .metarow .date{font-variant-numeric:tabular-nums}
+.art .metarow .date{font-weight:700;font-variant-numeric:tabular-nums}
 .art h1{font-size:clamp(1.45rem,3.1vw,2.1rem);font-weight:800;line-height:1.3;
   letter-spacing:-.03em;margin:0 0 .5rem;text-wrap:balance}
 .art .dek{font-size:.86rem;font-weight:700;margin:0 0 1rem}
@@ -157,14 +159,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .ig-card p{color:#8e8e8e;font-size:.88rem;margin-bottom:1rem}
 .ig-card span{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;
   letter-spacing:.09em;background:var(--paper);color:var(--ink);padding:.65rem 1.2rem}
-.more{max-width:760px;margin:clamp(2.5rem,5vw,4rem) auto 0;padding:0 var(--gut) 5rem}
-.more h3{font-size:.78rem;letter-spacing:.02em;color:var(--grey);
-  margin:0 0 1rem;font-weight:400;padding-bottom:.7rem;border-bottom:1px solid var(--rule)}
+.more{max-width:760px;margin:0 auto;padding:0 var(--gut) 5rem}
+.more h3{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--grey);
+  margin:0 0 1rem;font-weight:400}
 .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem .8rem}
 .more-grid figure{margin:0 0 .45rem;aspect-ratio:3/4;overflow:hidden;background:var(--wash)}
 .more-grid figure img{width:100%;height:100%;object-fit:cover}
-.more-grid h4{font-size:.84rem;font-weight:700;line-height:1.35;margin:0;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.more-grid h4{font-size:.84rem;font-weight:700;line-height:1.35;margin:0}
 .more-grid a:hover h4{text-decoration:underline;text-underline-offset:2px}
 
 /* ── SHOP 목록 (magazine-b 참고) ────────────────────────────
@@ -196,7 +197,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .prod{display:block;width:100%;text-align:left}
 .prod .pair{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .prod .pair figure{margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--wash)}
-.prod .pair figure:first-child{background:var(--wash);display:grid;place-items:center}
+.prod .pair figure:first-child{background:#262626;display:grid;place-items:center}
 .prod .pair figure:first-child img{width:44%;aspect-ratio:3/4;object-fit:cover;
   box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .5s cubic-bezier(.22,.61,.24,1)}
 .prod .pair figure:last-child img{width:100%;height:100%;object-fit:cover;
@@ -276,10 +277,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .toast.show{opacity:1;transform:translateX(-50%)}
 
 /* ══ 푸터 ══ */
-footer{border-top:1.5px solid var(--ink);padding:1.4rem var(--edge) 3rem;display:flex;
+footer{border-top:1.5px solid var(--ink);padding:1.4rem var(--gut) 3rem;display:flex;
   justify-content:space-between;gap:1rem;flex-wrap:wrap;
-  font-size:.72rem;color:var(--grey);letter-spacing:.01em}
-footer span:first-child{font-family:var(--mono);letter-spacing:.06em}
+  font-family:var(--mono);font-size:.68rem;color:var(--grey);letter-spacing:.06em}
 footer a:hover{color:var(--ink)}
 
 /* ══ 반응형 ══ */
