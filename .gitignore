@@ -4,3 +4,6 @@ _site/
 
 # 사이트와 무관한 도구 캐시
 .impeccable/
+
+# Netlify CLI 배포 캐시
+.netlify/
