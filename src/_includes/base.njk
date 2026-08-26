@@ -130,6 +130,21 @@
 
 <div class="toast" id="toast"></div>
 
+{# 관리자 초대 메일의 링크는 사이트 첫 화면으로 떨어집니다.
+   이 위젯이 없으면 비밀번호를 정하는 창이 뜨지 않아 로그인을 못 합니다. #}
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on("init", function (user) {
+    if (!user) {
+      window.netlifyIdentity.on("login", function () {
+        document.location.href = "/admin/";
+      });
+    }
+  });
+}
+</script>
+
 <script>
 // 스크롤하면 제호가 줄어들며 분류 칩만 남아 고정됩니다
 (function(){
